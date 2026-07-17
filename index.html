@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BuildCraft — Construction & Interior Contractors | Greater Noida West</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+  :root{ --orange:#F97316; --orange-dark:#EA580C; --ink:#1A1206; }
+  body{ font-family:'Inter',sans-serif; color:#1F2937; }
+  .display{ font-family:'Poppins',sans-serif; }
+  .grad-text{ background:linear-gradient(90deg,#FB923C,#F97316 50%,#EA580C); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% auto; animation:shimmer 4s linear infinite; }
+  .orange-btn{ background:linear-gradient(90deg,#F97316,#EA580C); transition:transform .15s, box-shadow .15s; box-shadow:0 8px 24px rgba(249,115,22,.28); }
+  .orange-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 38px rgba(249,115,22,.45); }
+  .card{ background:#fff; border:1px solid #F1EBE4; border-radius:1.25rem; box-shadow:0 6px 24px rgba(31,41,55,.06); transition:transform .25s, box-shadow .25s, border-color .25s; }
+  .card:hover{ transform:translateY(-8px); box-shadow:0 22px 46px rgba(249,115,22,.26); border-color:rgba(249,115,22,.4); }
+  .glow{ position:absolute; border-radius:9999px; filter:blur(100px); opacity:.28; pointer-events:none; }
+  .field{ width:100%; background:#FAFAF9; border:1px solid #E7E2DB; border-radius:.7rem; padding:.75rem 1rem; font-size:.9rem; color:#1F2937; }
+  .field:focus{ outline:none; border-color:#F97316; box-shadow:0 0 0 3px rgba(249,115,22,.18); background:#fff; }
+  html{ scroll-behavior:smooth }
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.show{ opacity:1; transform:none; }
+  @keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .floaty{ animation:floaty 5s ease-in-out infinite; }
+  @keyframes pulseRing{ 0%{box-shadow:0 0 0 0 rgba(249,115,22,.45)} 70%{box-shadow:0 0 0 16px rgba(249,115,22,0)} 100%{box-shadow:0 0 0 0 rgba(249,115,22,0)} }
+  .pulse-orange{ animation:pulseRing 2.4s infinite; }
+  @keyframes pulseGreen{ 0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)} 70%{box-shadow:0 0 0 14px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
+  .pulse-green{ animation:pulseGreen 2.4s infinite; }
+  @keyframes shimmer{ 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+  .nav-link{ position:relative }
+  .nav-link::after{ content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:linear-gradient(90deg,#F97316,#EA580C); transition:width .2s }
+  .nav-link:hover::after{ width:100% }
+  #modalOverlay{ background:rgba(26,18,6,.55); backdrop-filter:blur(4px) }
+  .modal-in{ animation:pop .25s ease }
+  @keyframes pop{ from{transform:scale(.94);opacity:0} to{transform:scale(1);opacity:1} }
+  .fab{ position:fixed; right:20px; z-index:45; width:56px; height:56px; border-radius:9999px; display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 8px 24px rgba(0,0,0,.2); }
+  @media (prefers-reduced-motion:reduce){ .card:hover,.orange-btn:hover{transform:none} .floaty,.pulse-orange,.pulse-green,.grad-text{animation:none} .reveal{opacity:1;transform:none} }
+</style>
+</head>
+<body class="bg-white">
+
+<!-- ===== TOP BAR ===== -->
+<div class="w-full text-center text-sm py-2 px-3 text-white" style="background:linear-gradient(90deg,#EA580C,#F97316)">
+  <span class="font-semibold">📞 Call us today:</span>
+  <a href="tel:+919891795629" class="font-bold underline">+91-9891795629</a>
+  <span class="hidden sm:inline"> · 20+ years of trusted construction &amp; interior work</span>
+</div>
+
+<!-- ===== NAV ===== -->
+<nav class="flex items-center justify-between px-5 md:px-12 py-4 sticky top-0 z-40 bg-white bg-opacity-90" style="backdrop-filter:blur(10px);border-bottom:1px solid #F1EBE4">
+  <div class="display text-2xl font-extrabold flex items-center gap-2"><span class="grad-text">🏗️</span> Build<span class="grad-text">Craft</span></div>
+  <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-600">
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#why" class="nav-link">Why Us</a>
+    <a href="#work" class="nav-link">Process</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <button onclick="openModal()" class="orange-btn text-white text-sm font-semibold px-5 py-2.5 rounded-xl">Get a Quote</button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="relative overflow-hidden px-5 md:px-12 pt-16 pb-24" style="background:linear-gradient(180deg,#FFF7ED,#fff)">
+  <div class="glow w-96 h-96" style="background:#F97316;top:-60px;right:-40px"></div>
+  <div class="glow w-80 h-80" style="background:#FDBA74;bottom:-80px;left:-60px"></div>
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center relative">
+    <div>
+      <div class="inline-block text-xs font-semibold px-4 py-1.5 rounded-full mb-5" style="background:#FFEDD5;color:#EA580C">🏆 20+ Years of Experience</div>
+      <h1 class="display text-4xl md:text-5xl font-extrabold leading-tight text-gray-900">
+        Your Dream Home, <span class="grad-text">Built A to Z</span>
+      </h1>
+      <p class="mt-5 text-gray-600 text-base md:text-lg max-w-md">
+        From foundation to finishing — construction, paint &amp; putty, interior design, furniture, and electrical fitting. One trusted team for every stage of your home.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <button onclick="openModal()" class="orange-btn pulse-orange text-white font-semibold px-8 py-3.5 rounded-xl">Get a Free Quote</button>
+        <a href="tel:+919891795629" class="px-8 py-3.5 rounded-xl font-semibold border-2 border-orange-200 text-orange-700 hover:border-orange-400">📞 Call Now</a>
+      </div>
+      <div class="mt-10 flex gap-8">
+        <div><div class="display text-3xl font-extrabold text-gray-900">20+</div><div class="text-xs text-gray-500 mt-1">Years Experience</div></div>
+        <div><div class="display text-3xl font-extrabold text-gray-900">500+</div><div class="text-xs text-gray-500 mt-1">Projects Done</div></div>
+        <div><div class="display text-3xl font-extrabold text-gray-900">A–Z</div><div class="text-xs text-gray-500 mt-1">Complete Work</div></div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="card p-8 floaty" style="background:linear-gradient(135deg,#F97316,#EA580C)">
+        <div class="bg-white rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style="background:#FFEDD5">🏠</div>
+            <div><div class="font-bold text-gray-900">Complete Home Solution</div><div class="text-xs text-gray-500">Construction to Interiors</div></div>
+          </div>
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-2 p-2.5 rounded-xl text-sm font-medium" style="background:#FAFAF9">🧱 Construction &amp; Civil Work</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-xl text-sm font-medium" style="background:#FAFAF9">🎨 Paint &amp; Putty</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-xl text-sm font-medium" style="background:#FAFAF9">🛋️ Interior &amp; Furniture</div>
+            <div class="flex items-center gap-2 p-2.5 rounded-xl text-sm font-medium" style="background:#FAFAF9">💡 Electrical Fitting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SERVICES ===== -->
+<section id="services" class="px-5 md:px-12 py-20 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="display text-3xl md:text-4xl font-extrabold text-gray-900">Our <span class="grad-text">Services</span></h2>
+      <p class="text-gray-600 mt-3 max-w-xl mx-auto">Everything your home needs, handled end-to-end by one experienced team.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+      <div class="card p-7 reveal"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🧱</div><h3 class="display font-bold text-xl">House Construction</h3><p class="text-gray-600 text-sm mt-2">Complete civil &amp; RCC work from foundation to roof, with quality materials and skilled labour.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.05s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🎨</div><h3 class="display font-bold text-xl">Paint &amp; Putty</h3><p class="text-gray-600 text-sm mt-2">Smooth wall finishing, premium putty work, and professional interior &amp; exterior painting.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🛋️</div><h3 class="display font-bold text-xl">Interior Design</h3><p class="text-gray-600 text-sm mt-2">Modern, functional interior designs tailored to your space, taste, and budget.</p></div>
+      <div class="card p-7 reveal"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🪑</div><h3 class="display font-bold text-xl">Furniture &amp; Woodwork</h3><p class="text-gray-600 text-sm mt-2">Custom furniture, modular kitchens, wardrobes, beds and all carpentry work.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.05s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">💡</div><h3 class="display font-bold text-xl">Electrical Fitting</h3><p class="text-gray-600 text-sm mt-2">Safe, reliable electrical wiring, fitting, and fixtures by trained electricians.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🚿</div><h3 class="display font-bold text-xl">Plumbing &amp; Sanitary</h3><p class="text-gray-600 text-sm mt-2">Complete plumbing, bathroom fittings, and sanitary installation done right.</p></div>
+      <div class="card p-7 reveal"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🔲</div><h3 class="display font-bold text-xl">Tiles &amp; Flooring</h3><p class="text-gray-600 text-sm mt-2">Marble, granite, vitrified and wooden flooring with expert laying and finishing.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.05s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🏛️</div><h3 class="display font-bold text-xl">False Ceiling &amp; POP</h3><p class="text-gray-600 text-sm mt-2">Designer POP and gypsum false ceilings with modern lighting solutions.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">💧</div><h3 class="display font-bold text-xl">Waterproofing</h3><p class="text-gray-600 text-sm mt-2">Reliable roof, wall and bathroom waterproofing to protect your home for years.</p></div>
+      <div class="card p-7 reveal"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🪟</div><h3 class="display font-bold text-xl">Aluminium &amp; Glass</h3><p class="text-gray-600 text-sm mt-2">Windows, partitions, and glass work with quality aluminium fabrication.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.05s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">🔨</div><h3 class="display font-bold text-xl">Renovation &amp; Repair</h3><p class="text-gray-600 text-sm mt-2">Give your old home a fresh new look with complete renovation and remodeling.</p></div>
+      <div class="card p-7 reveal" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4" style="background:#FFEDD5">✅</div><h3 class="display font-bold text-xl">Turnkey A to Z</h3><p class="text-gray-600 text-sm mt-2">One contract, one team, zero hassle — we handle every stage of your project.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section id="why" class="px-5 md:px-12 py-20" style="background:#FFF7ED">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12"><h2 class="display text-3xl md:text-4xl font-extrabold text-gray-900">Why Choose <span class="grad-text">BuildCraft?</span></h2></div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="card p-6 text-center reveal"><div class="text-4xl">🏆</div><h3 class="display font-bold mt-3">20+ Years</h3><p class="text-gray-600 text-sm mt-2">Two decades of trusted experience in home building.</p></div>
+      <div class="card p-6 text-center reveal" style="transition-delay:.1s"><div class="text-4xl">🤝</div><h3 class="display font-bold mt-3">One Team, A–Z</h3><p class="text-gray-600 text-sm mt-2">No need to hire multiple contractors — we do it all.</p></div>
+      <div class="card p-6 text-center reveal" style="transition-delay:.2s"><div class="text-4xl">💰</div><h3 class="display font-bold mt-3">Fair Pricing</h3><p class="text-gray-600 text-sm mt-2">Transparent quotes with no hidden charges.</p></div>
+      <div class="card p-6 text-center reveal" style="transition-delay:.3s"><div class="text-4xl">⏱️</div><h3 class="display font-bold mt-3">On-Time Delivery</h3><p class="text-gray-600 text-sm mt-2">We respect your time and finish as promised.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section id="work" class="px-5 md:px-12 py-20 text-white" style="background:linear-gradient(135deg,#F97316,#EA580C)">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="display text-3xl md:text-4xl font-extrabold">How We Work</h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6 mt-12 text-left">
+      <div class="bg-white bg-opacity-10 rounded-2xl p-6"><div class="display text-3xl font-extrabold">1</div><h3 class="font-semibold mt-2">Consultation</h3><p class="text-sm opacity-90 mt-1">We visit, understand your needs and share ideas.</p></div>
+      <div class="bg-white bg-opacity-10 rounded-2xl p-6"><div class="display text-3xl font-extrabold">2</div><h3 class="font-semibold mt-2">Free Quote</h3><p class="text-sm opacity-90 mt-1">Transparent, detailed estimate for the full project.</p></div>
+      <div class="bg-white bg-opacity-10 rounded-2xl p-6"><div class="display text-3xl font-extrabold">3</div><h3 class="font-semibold mt-2">Execution</h3><p class="text-sm opacity-90 mt-1">Skilled team builds with quality and care.</p></div>
+      <div class="bg-white bg-opacity-10 rounded-2xl p-6"><div class="display text-3xl font-extrabold">4</div><h3 class="font-semibold mt-2">Handover</h3><p class="text-sm opacity-90 mt-1">On-time delivery of your finished dream home.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="px-5 md:px-12 py-20" style="background:#FFF7ED">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-stretch">
+    <div class="card p-8">
+      <h2 class="display text-3xl font-extrabold text-gray-900">Get in <span class="grad-text">Touch</span></h2>
+      <p class="text-gray-600 mt-3 text-sm">Have a project in mind? Reach out and we'll get back to you with a free consultation.</p>
+      <div class="mt-6 space-y-4 text-sm">
+        <a href="tel:+919891795629" class="flex items-center gap-3"><span class="w-10 h-10 rounded-full flex items-center justify-center text-lg" style="background:#FFEDD5">📞</span><span class="font-semibold text-gray-800">+91-9891795629</span></a>
+        <a href="https://wa.me/919891795629?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20construction%20services." target="_blank" rel="noopener" class="flex items-center gap-3"><span class="w-10 h-10 rounded-full flex items-center justify-center text-lg text-white" style="background:#25D366">🟢</span><span class="font-semibold text-gray-800">Chat on WhatsApp</span></a>
+        <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-full flex items-center justify-center text-lg" style="background:#FFEDD5">📍</span><span class="text-gray-700">Greater Noida West, near Gaur City Centre</span></div>
+        <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-full flex items-center justify-center text-lg" style="background:#FFEDD5">⏰</span><span class="text-gray-700">Mon–Sun · 9:00 AM – 8:00 PM</span></div>
+      </div>
+      <a href="https://maps.google.com/?q=Gaur+City+Centre+Greater+Noida+West" target="_blank" rel="noopener" class="inline-block mt-6 text-sm font-semibold text-orange-600 underline">View on Google Maps →</a>
+    </div>
+    <div class="card p-8">
+      <h3 class="display text-xl font-bold text-gray-900">Send an Enquiry</h3>
+      <div id="formBody" class="mt-4 space-y-3">
+        <input id="fName" class="field" placeholder="Your Name" />
+        <input id="fPhone" type="tel" class="field" placeholder="Contact Number" />
+        <select id="fService" class="field text-gray-500">
+          <option value="">Select service…</option>
+          <option>House Construction</option><option>Paint &amp; Putty</option><option>Interior Design</option>
+          <option>Furniture &amp; Woodwork</option><option>Electrical Fitting</option><option>Plumbing &amp; Sanitary</option>
+          <option>Tiles &amp; Flooring</option><option>False Ceiling &amp; POP</option><option>Waterproofing</option>
+          <option>Aluminium &amp; Glass</option><option>Renovation &amp; Repair</option><option>Complete Turnkey (A–Z)</option>
+        </select>
+        <input id="fArea" class="field" placeholder="Area / Location" />
+        <textarea id="fMsg" rows="2" class="field" placeholder="Your Message"></textarea>
+        <p id="formError" class="text-xs text-red-500 hidden">Please fill in your name, contact number, and service.</p>
+        <div class="flex gap-2">
+          <button onclick="submitForm()" id="submitBtn" class="orange-btn flex-1 text-white font-bold py-3 rounded-xl">Submit Enquiry</button>
+          <button onclick="sendWhatsAppFromForm()" class="font-bold py-3 px-4 rounded-xl text-white" style="background:#25D366">WhatsApp</button>
+        </div>
+      </div>
+      <div id="formSuccess" class="hidden text-center py-8">
+        <div class="text-5xl">✅</div><h4 class="display font-bold text-lg mt-3 text-gray-900">Enquiry Sent!</h4>
+        <p class="text-gray-500 text-sm mt-1">Thank you — we'll contact you shortly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="px-5 md:px-12 py-10 text-gray-300 text-sm" style="background:#1A1206">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+    <div>
+      <div class="display text-lg font-bold text-white mb-3">🏗️ BuildCraft</div>
+      <p class="text-gray-400 text-sm">20+ years of trusted construction &amp; interior work in Greater Noida West. Your dream home, built A to Z.</p>
+    </div>
+    <div>
+      <div class="font-semibold text-white mb-3">Contact</div>
+      <div class="space-y-2">
+        <a href="tel:+919891795629" class="flex items-center gap-2 hover:text-orange-400"><span>📞</span> +91-9891795629</a>
+        <a href="https://wa.me/919891795629?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20construction%20services." target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-green-400"><span>🟢</span> WhatsApp Us</a>
+        <div class="flex items-center gap-2"><span>📍</span> Greater Noida West, near Gaur City Centre</div>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-white mb-3">Quick Links</div>
+      <div class="space-y-2">
+        <a href="#services" class="block hover:text-orange-400">Services</a>
+        <a href="#why" class="block hover:text-orange-400">Why Us</a>
+        <a href="#contact" class="block hover:text-orange-400">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto mt-8 pt-6 text-center text-xs text-gray-500" style="border-top:1px solid rgba(255,255,255,.1)">© 2026 BuildCraft · 20+ Years of Trusted Home Building</div>
+</footer>
+
+<!-- ===== FLOATING BUTTONS ===== -->
+<a href="https://wa.me/919891795629?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20construction%20services." target="_blank" rel="noopener" class="fab pulse-green" style="bottom:88px; background:#25D366" title="Chat on WhatsApp" aria-label="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<a href="tel:+919891795629" class="fab pulse-orange" style="bottom:20px; background:linear-gradient(90deg,#F97316,#EA580C)" title="Call Now" aria-label="Call">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+</a>
+
+<!-- ===== QUOTE MODAL ===== -->
+<div id="modalOverlay" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+  <div class="modal-in bg-white rounded-2xl p-7 w-full" style="max-width:420px">
+    <div class="flex items-start justify-between">
+      <div><h3 class="display text-xl font-bold text-gray-900">Get a Free Quote</h3><p class="text-gray-500 text-xs mt-1">Fill in your details and we'll call you back.</p></div>
+      <button onclick="closeModal()" class="text-gray-400 hover:text-gray-700 text-xl leading-none">✕</button>
+    </div>
+    <div id="mFormBody" class="mt-5 space-y-3">
+      <input id="mName" class="field" placeholder="Your Name" />
+      <input id="mPhone" type="tel" class="field" placeholder="Contact Number" />
+      <select id="mService" class="field text-gray-500">
+        <option value="">Select service…</option>
+        <option>House Construction</option><option>Paint &amp; Putty</option><option>Interior Design</option>
+        <option>Furniture &amp; Woodwork</option><option>Electrical Fitting</option><option>Plumbing &amp; Sanitary</option>
+        <option>Tiles &amp; Flooring</option><option>False Ceiling &amp; POP</option><option>Waterproofing</option>
+        <option>Aluminium &amp; Glass</option><option>Renovation &amp; Repair</option><option>Complete Turnkey (A–Z)</option>
+      </select>
+      <input id="mArea" class="field" placeholder="Area / Location" />
+      <textarea id="mMsg" rows="2" class="field" placeholder="Your Message"></textarea>
+      <p id="mError" class="text-xs text-red-500 hidden">Please fill in your name, contact number, and service.</p>
+      <div class="flex gap-2">
+        <button onclick="submitModal()" id="mBtn" class="orange-btn flex-1 text-white font-bold py-3 rounded-xl">Submit</button>
+        <button onclick="sendWhatsAppFromModal()" class="font-bold py-3 px-4 rounded-xl text-white" style="background:#25D366">WhatsApp</button>
+      </div>
+    </div>
+    <div id="mFormSuccess" class="hidden text-center py-8">
+      <div class="text-5xl">✅</div><h4 class="display font-bold text-lg mt-3 text-gray-900">Thank You!</h4>
+      <p class="text-gray-500 text-sm mt-1">We've received your request and will call you back shortly.</p>
+      <button onclick="closeModal()" class="mt-5 text-sm underline text-orange-600">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   ENQUIRY → EMAIL
+   Replace RECEIVER_EMAIL with your email address.
+   First submit par FormSubmit ek activation email bhejega —
+   usme link ek baar click karke activate karo (one-time).
+   ===================================================== */
+const RECEIVER_EMAIL = "your-email@example.com"; // <-- APNA EMAIL YAHAN DAALO
+const WHATSAPP_NUMBER = "919891795629";
+
+function openModal(){
+  document.getElementById('mFormBody').classList.remove('hidden');
+  document.getElementById('mFormSuccess').classList.add('hidden');
+  const m=document.getElementById('modalOverlay'); m.classList.remove('hidden'); m.classList.add('flex');
+  document.getElementById('mName').focus();
+}
+function closeModal(){ const m=document.getElementById('modalOverlay'); m.classList.add('hidden'); m.classList.remove('flex'); }
+document.getElementById('modalOverlay').addEventListener('click',e=>{ if(e.target.id==='modalOverlay') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+async function sendEnquiry(payload){
+  try{
+    await fetch(`https://formsubmit.co/ajax/${RECEIVER_EMAIL}`,{
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }catch(e){}
+}
+
+function buildWaMessage(name, phone, service, area, msg){
+  const text = `*New Enquiry — BuildCraft*%0A%0A*Name:* ${name}%0A*Contact:* ${phone}%0A*Service:* ${service}%0A*Area:* ${area}%0A*Message:* ${msg}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+}
+
+async function submitForm(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const service=document.getElementById('fService').value;
+  const area=document.getElementById('fArea').value.trim();
+  const msg=document.getElementById('fMsg').value.trim();
+  const err=document.getElementById('formError');
+  if(!name||!phone||!service){ err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  const btn=document.getElementById('submitBtn'); btn.textContent='Submitting…'; btn.disabled=true;
+  await sendEnquiry({ _subject:'New Website Enquiry — BuildCraft', Name:name, Contact:phone, Service:service, Area:area, Message:msg });
+  btn.textContent='Submit Enquiry'; btn.disabled=false;
+  document.getElementById('formBody').classList.add('hidden');
+  document.getElementById('formSuccess').classList.remove('hidden');
+}
+
+function sendWhatsAppFromForm(){
+  const name=document.getElementById('fName').value.trim()||'-';
+  const phone=document.getElementById('fPhone').value.trim()||'-';
+  const service=document.getElementById('fService').value||'-';
+  const area=document.getElementById('fArea').value.trim()||'-';
+  const msg=document.getElementById('fMsg').value.trim()||'-';
+  window.open(buildWaMessage(name,phone,service,area,msg),'_blank');
+}
+
+async function submitModal(){
+  const name=document.getElementById('mName').value.trim();
+  const phone=document.getElementById('mPhone').value.trim();
+  const service=document.getElementById('mService').value;
+  const area=document.getElementById('mArea').value.trim();
+  const msg=document.getElementById('mMsg').value.trim();
+  const err=document.getElementById('mError');
+  if(!name||!phone||!service){ err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  const btn=document.getElementById('mBtn'); btn.textContent='Submitting…'; btn.disabled=true;
+  await sendEnquiry({ _subject:'New Quote Request — BuildCraft', Name:name, Contact:phone, Service:service, Area:area, Message:msg });
+  btn.textContent='Submit'; btn.disabled=false;
+  document.getElementById('mFormBody').classList.add('hidden');
+  document.getElementById('mFormSuccess').classList.remove('hidden');
+}
+
+function sendWhatsAppFromModal(){
+  const name=document.getElementById('mName').value.trim()||'-';
+  const phone=document.getElementById('mPhone').value.trim()||'-';
+  const service=document.getElementById('mService').value||'-';
+  const area=document.getElementById('mArea').value.trim()||'-';
+  const msg=document.getElementById('mMsg').value.trim()||'-';
+  window.open(buildWaMessage(name,phone,service,area,msg),'_blank');
+}
+
+/* scroll reveal */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+},{ threshold:.15 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
